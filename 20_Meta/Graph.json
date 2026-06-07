@@ -29,12 +29,27 @@
       ],
       "confidenceScore": 0.3,
       "createdAt": "2026-06-07T13:47:02.390Z"
+    },
+    {
+      "id": "ccfbaf5f-ba08-4f9b-9c52-6a5a11d89243",
+      "title": "효과적인 프롬프트 엔지니어링 패턴",
+      "path": "10_Wiki/🚀 Skills/프롬프트/효과적인_프롬프트_엔지니어링_패턴.md",
+      "category": "🚀 Skills\\프롬프트",
+      "tags": [
+        "프롬프트",
+        "단계별로",
+        "모델의",
+        "예시",
+        "출력"
+      ],
+      "confidenceScore": 0.3,
+      "createdAt": "2026-06-07T13:47:04.574Z"
     }
   ],
   "edges": [],
   "metadata": {
-    "totalNodes": 2,
+    "totalNodes": 3,
     "totalEdges": 0,
-    "lastUpdated": "2026-06-07T13:47:02.390Z"
+    "lastUpdated": "2026-06-07T13:47:04.574Z"
   }
 }
