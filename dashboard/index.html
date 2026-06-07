@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="P-Reinforce — RL 기반 자율 지식 관리 에이전트 대시보드. 지식 그래프 시각화, 문서 탐색, 피드백 인터페이스.">
+    <title>P-Reinforce | Knowledge Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- D3.js for Knowledge Graph -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- ═══ Top Header Bar ═══ -->
+        <header class="top-bar">
+            <div class="brand">
+                <div class="brand-icon">🧠</div>
+                <span class="brand-name">P-Reinforce</span>
+                <span class="brand-tag">Engine</span>
+            </div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-dot" id="engineStatus"></span>
+                    <span id="engineStatusText">Engine Active</span>
+                </div>
+                <div class="status-item">
+                    <i class="fa-solid fa-code-commit"></i>
+                    <span id="lastCommitTime">—</span>
+                </div>
+                <div class="status-item">
+                    <i class="fa-solid fa-cubes"></i>
+                    <span id="headerNodeCount">0 nodes</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══ Sidebar: Folder Tree ═══ -->
+        <aside class="sidebar animate-slide-left" id="sidebar">
+            <!-- Search -->
+            <div class="search-box">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" class="search-input" id="searchInput" placeholder="문서 검색...">
+                </div>
+            </div>
+
+            <!-- Wiki Folders -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">📂 Wiki Structure</div>
+                <ul class="folder-tree" id="folderTree">
+                    <!-- Populated dynamically by app.js -->
+                    <li class="folder-item" data-category="all">
+                        <span class="folder-icon">📚</span>
+                        <span class="folder-name">전체 문서</span>
+                        <span class="folder-count" id="totalDocCount">0</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- System -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">⚙️ System</div>
+                <ul class="folder-tree">
+                    <li class="folder-item" id="navPolicy">
+                        <span class="folder-icon">🧠</span>
+                        <span class="folder-name">RL Policy</span>
+                    </li>
+                    <li class="folder-item" id="navIndex">
+                        <span class="folder-icon">📋</span>
+                        <span class="folder-name">Index</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ═══ Main Content ═══ -->
+        <main class="main-content" id="mainContent">
+            <!-- Stats Row -->
+            <div class="stats-row animate-fade">
+                <div class="stat-card">
+                    <div class="stat-icon indigo">
+                        <i class="fa-solid fa-circle-nodes"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Nodes</span>
+                        <span class="stat-value" id="statNodes">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon emerald">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Connections</span>
+                        <span class="stat-value" id="statEdges">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon amber">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Connectivity</span>
+                        <span class="stat-value" id="statConnectivity">—</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon cyan">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Feedbacks</span>
+                        <span class="stat-value" id="statFeedbacks">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Knowledge Graph -->
+            <div class="graph-section animate-fade">
+                <div class="graph-header">
+                    <div class="graph-title">
+                        <i class="fa-solid fa-diagram-project icon"></i>
+                        Knowledge Graph
+                    </div>
+                    <div class="graph-controls">
+                        <button class="graph-btn" id="btnResetGraph">
+                            <i class="fa-solid fa-arrows-rotate"></i> Reset
+                        </button>
+                        <button class="graph-btn" id="btnRefreshData">
+                            <i class="fa-solid fa-rotate"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div id="graphCanvas"></div>
+            </div>
+        </main>
+
+        <!-- ═══ Right Panel: Document Details ═══ -->
+        <aside class="right-panel animate-slide-right" id="rightPanel">
+            <!-- Document Preview -->
+            <div class="panel-section">
+                <div class="panel-title">
+                    <i class="fa-solid fa-file-lines"></i> Document Details
+                </div>
+                <div class="doc-preview" id="docPreview">
+                    <div class="doc-preview-empty">
+                        <div class="empty-icon">📄</div>
+                        <p>그래프에서 노드를 클릭하거나<br>사이드바에서 문서를 선택하세요</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Actions -->
+            <div class="panel-section" id="feedbackSection" style="display: none;">
+                <div class="panel-title">
+                    <i class="fa-solid fa-thumbs-up"></i> Feedback
+                </div>
+                <div class="feedback-actions">
+                    <button class="feedback-btn praise" id="btnPraise" title="분류가 정확합니다">
+                        <i class="fa-solid fa-check-circle"></i> 칭찬
+                    </button>
+                    <button class="feedback-btn move" id="btnMove" title="다른 폴더로 이동">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i> 이동
+                    </button>
+                    <button class="feedback-btn correct" id="btnCorrect" title="분류가 잘못됨">
+                        <i class="fa-solid fa-triangle-exclamation"></i> 교정
+                    </button>
+                    <button class="feedback-btn edit" id="btnEdit" title="내용 수정 필요">
+                        <i class="fa-solid fa-pen-to-square"></i> 수정
+                    </button>
+                </div>
+            </div>
+
+            <!-- Git History -->
+            <div class="panel-section">
+                <div class="panel-title">
+                    <i class="fa-brands fa-git-alt"></i> Git History
+                </div>
+                <ul class="git-log-list" id="gitLogList">
+                    <li class="git-log-item">
+                        <span class="git-msg" style="color: var(--text-muted)">커밋 이력을 불러오는 중...</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check toast-icon"></i>
+        <span id="toastMessage">작업이 완료되었습니다.</span>
+    </div>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
