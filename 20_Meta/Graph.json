@@ -14,12 +14,27 @@
       ],
       "confidenceScore": 0.3,
       "createdAt": "2026-06-07T13:46:45.383Z"
+    },
+    {
+      "id": "95d58427-1df6-4cea-95ef-e6923ee14abc",
+      "title": "WikiAgent 프로젝트 계획",
+      "path": "10_Wiki/🛠️ Projects/Phase/WikiAgent_프로젝트_계획.md",
+      "category": "🛠️ Projects\\Phase",
+      "tags": [
+        "phase",
+        "js",
+        "목표",
+        "자동화",
+        "개발"
+      ],
+      "confidenceScore": 0.3,
+      "createdAt": "2026-06-07T13:47:02.390Z"
     }
   ],
   "edges": [],
   "metadata": {
-    "totalNodes": 1,
+    "totalNodes": 2,
     "totalEdges": 0,
-    "lastUpdated": "2026-06-07T13:46:45.383Z"
+    "lastUpdated": "2026-06-07T13:47:02.390Z"
   }
 }
