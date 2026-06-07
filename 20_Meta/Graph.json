@@ -1,9 +1,25 @@
 {
-  "nodes": [],
+  "nodes": [
+    {
+      "id": "921232dc-1c33-44c0-946b-3f1b56622a6f",
+      "title": "강화학습의 기본 개념",
+      "path": "10_Wiki/💡 Topics/에이전트가/강화학습의_기본_개념.md",
+      "category": "💡 Topics\\에이전트가",
+      "tags": [
+        "에이전트가",
+        "learning",
+        "알고리즘",
+        "가치",
+        "policy"
+      ],
+      "confidenceScore": 0.3,
+      "createdAt": "2026-06-07T13:46:45.383Z"
+    }
+  ],
   "edges": [],
   "metadata": {
-    "totalNodes": 0,
+    "totalNodes": 1,
     "totalEdges": 0,
-    "lastUpdated": null
+    "lastUpdated": "2026-06-07T13:46:45.383Z"
   }
 }
