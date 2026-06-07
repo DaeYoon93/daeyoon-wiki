@@ -44,12 +44,27 @@
       ],
       "confidenceScore": 0.3,
       "createdAt": "2026-06-07T13:47:04.574Z"
+    },
+    {
+      "id": "48e43f9c-27c5-4a1a-aedc-277a427479a0",
+      "title": "비에이치아이",
+      "path": "10_Wiki/🛠️ Projects/발전설비/비에이치아이.md",
+      "category": "🛠️ Projects\\발전설비",
+      "tags": [
+        "발전설비",
+        "있습니다",
+        "lng",
+        "복합화력",
+        "공급계약"
+      ],
+      "confidenceScore": 0.3,
+      "createdAt": "2026-06-07T14:27:18.732Z"
     }
   ],
   "edges": [],
   "metadata": {
-    "totalNodes": 3,
+    "totalNodes": 4,
     "totalEdges": 0,
-    "lastUpdated": "2026-06-07T13:47:04.574Z"
+    "lastUpdated": "2026-06-07T14:27:18.732Z"
   }
 }

@@ -21,6 +21,10 @@ const wikiGen = require('./wiki-generator');
 const graphManager = require('./graph-manager');
 const policyManager = require('./policy-manager');
 const gitSync = require('./git-sync');
+const { parseOfficeFile, SUPPORTED_EXTENSIONS } = require('./parsers');
+
+const TEXT_EXTENSIONS = ['.md', '.txt', '.json'];
+const ALL_EXTENSIONS = [...TEXT_EXTENSIONS, ...SUPPORTED_EXTENSIONS];
 
 // ─── Paths ──────────────────────────────────────────────
 const RAW_DIR = path.join(ROOT_DIR, '00_Raw');
@@ -52,8 +56,15 @@ async function processRawFile(filePath) {
     console.log(`${'═'.repeat(60)}`);
 
     try {
-        // 1. Read raw content
-        const rawContent = fs.readFileSync(filePath, 'utf-8');
+        // 1. Read raw content (Office files go through parser first)
+        let rawContent;
+        if (SUPPORTED_EXTENSIONS.includes(path.extname(filePath).toLowerCase())) {
+            console.log(`[Pipeline] 📊 Parsing Office file: ${filename}`);
+            rawContent = await parseOfficeFile(filePath);
+        } else {
+            rawContent = fs.readFileSync(filePath, 'utf-8');
+        }
+
         if (rawContent.trim().length === 0) {
             console.log('[Pipeline] ⏭️  Empty file, skipping');
             return;
@@ -327,7 +338,7 @@ function startWatcher() {
 
     watcher.on('add', (filePath) => {
         const ext = path.extname(filePath).toLowerCase();
-        if (['.md', '.txt', '.json'].includes(ext)) {
+        if (ALL_EXTENSIONS.includes(ext)) {
             console.log(`[Watcher] 👀 New file detected: ${path.basename(filePath)}`);
             processingQueue.push(filePath);
             processQueue();
@@ -336,7 +347,7 @@ function startWatcher() {
 
     watcher.on('change', (filePath) => {
         const ext = path.extname(filePath).toLowerCase();
-        if (['.md', '.txt', '.json'].includes(ext)) {
+        if (ALL_EXTENSIONS.includes(ext)) {
             console.log(`[Watcher] 📝 File modified: ${path.basename(filePath)}`);
             processingQueue.push(filePath);
             processQueue();
